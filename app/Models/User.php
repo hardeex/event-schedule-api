@@ -21,7 +21,9 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'role',
         'password',
+        'email_verification_token',
     ];
 
     /**
@@ -34,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
-    /**
+     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -44,6 +46,9 @@ class User extends Authenticatable implements JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+
+            'email_verified_at' => 'datetime',
+            'password_reset_token_created_at' => 'datetime',           
         ];
     }
 
