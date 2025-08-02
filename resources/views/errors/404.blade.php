@@ -276,7 +276,7 @@
         </div>
 
         <div class="api-links">
-            <a href="https://linkwillbeattached" class="api-link" target="_blank">
+            <a href="https://connectnest-hub.postman.co/workspace/connectNest-Hub-Workspace~5dfa6748-bfd1-4bdb-860c-685afa146d54/collection/37260121-02dbde0d-cb46-4f22-aca0-62ea98863ed2?action=share&creator=37260121" class="api-link" target="_blank">
               
                 <span>Launch Postman Collection</span>
             </a>
@@ -286,7 +286,7 @@
                 <span>Browse API Documentation</span>
             </a>
             
-            <a href="https://github.com/hardeex/backend-api-edirect" class="api-link tertiary" target="_blank">
+            <a href="https://github.com/hardeex/event-schedule-api" class="api-link tertiary" target="_blank">
                
                 <span>Explore Source Code</span>
             </a>

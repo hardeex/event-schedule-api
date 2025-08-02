@@ -1,6 +1,6 @@
 # Event Scheduler API
 
-Event Scheduler API, a  Laravel-based RESTful API designed for managing events and user authentication. This API allows users to register, log in, verify their email, manage passwords, and create or participate in events. It includes role-based access control (e.g., manager and user roles) and uses JWT for secure authentication. This README provides instructions to set up, configure, and use the API for personal or public use.
+Event Scheduler API, a  Laravel-based RESTful API designed for managing events and user authentication. This API allows users to register, log in, verify their email, manage passwords, and create or participate in events. It includes role-based access control (manager and user roles) and uses JWT for secure authentication. This README provides instructions to set up, configure, and use the API for personal or public use.
 
 ## Table of Contents
 
@@ -114,17 +114,7 @@ DB_USERNAME=root
 DB_PASSWORD=your_password
 ```
 
-### Mail Settings
 
-```env
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=your_mailtrap_username
-MAIL_PASSWORD=your_mailtrap_password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="no-reply@eventscheduler.com"
-MAIL_FROM_NAME="Event Scheduler"
 ```
 
 ### JWT Setup
