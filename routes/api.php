@@ -23,20 +23,20 @@ Route::get('test-email', function () {
 
 Route::controller(AuthController::class)->middleware('throttle:5,1')->group(function () {
    
-    Route::post('/register', 'register')->name('auth.register');
-    Route::post('/login', 'login')->name('auth.login');
-    Route::get('/verify/email', 'verifyEmail')->name('auth.email.verify');
-    Route::post('/email/resend', 'resendVerificationEmail')->name('auth.email.resend');
+    Route::post('/register', 'register')->name('register');
+    Route::post('/login', 'login')->name('login');
+    Route::get('/verify/email', 'verifyEmail')->name('email.verify');
+    Route::post('/email/resend', 'resendVerificationEmail')->name('email.resend');
       
-    Route::post('/password/confirm', 'passwordConfirm')->name('auth.password.confirm');
-    Route::post('/password/reset-request', 'sendPasswordResetEmail')->name('auth.password.reset.request');
-    Route::post('/password/reset', 'resetPassword')->name('auth.password.reset');
+    Route::post('/password/confirm', 'passwordConfirm')->name('password.confirm');
+    Route::post('/password/reset-request', 'sendPasswordResetEmail')->name('password.reset.request');
+    Route::post('/password/reset', 'resetPassword')->name('password.reset');
    
-    Route::get('/me', 'checkUser')->name('auth.user');
+    Route::get('/me', 'checkUser')->name('user');
     
     Route::middleware('auth:api')->group(function () {
-        Route::post('/logout', 'logout')->name('auth.logout');
-        Route::post('/password/change', 'changePassword')->name('auth.password.change');
+        Route::post('/logout', 'logout')->name('logout');
+        Route::post('/password/change', 'changePassword')->name('password.change');
     });
 });
 
@@ -46,8 +46,13 @@ Route::prefix('events')->controller(EventController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/{event}', 'show');
 
-    Route::post('/', 'store');  
+   
     Route::post('/register', 'register');
     
-    Route::delete('/{event}', 'cancel');
+   
+
+    Route::middleware('manager')->group(function(){
+         Route::post('/', 'store');  
+         Route::delete('/delete/{event}', 'cancel');
+    });
 });

@@ -1,61 +1,270 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Event Scheduler API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Event Scheduler API, a  Laravel-based RESTful API designed for managing events and user authentication. This API allows users to register, log in, verify their email, manage passwords, and create or participate in events. It includes role-based access control (e.g., manager and user roles) and uses JWT for secure authentication. This README provides instructions to set up, configure, and use the API for personal or public use.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* Features
+* Prerequisites
+* Installation
+* Configuration
+* Database Setup
+* Running the Application
+* API Endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  * Authentication Endpoints
+  * Event Endpoints
+* Postman Collection
+* Testing
+* Troubleshooting
+* Contributing
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### User Authentication:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Register with email verification.
+* Login with JWT-based authentication.
+* Email verification and password reset functionality.
+* Password change and confirmation.
+* Logout and token invalidation.
 
-## Laravel Sponsors
+### Event Management:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* Create,  and cancel events (manager-only).
+* Register for events (users and managers).
+* Check for event capacity and schedule conflicts.
 
-### Premium Partners
+### Role-Based Access Control:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* Managers can create and cancel events.
+* Users can register for events.
+
+### Other Highlights:
+
+* Rate Limiting: Throttles login and registration attempts to prevent abuse.
+* Logging: Detailed logging for debugging and monitoring.
+* Validation: Robust input validation for all requests.
+* Resources: Structured API responses using Laravel Resource classes.
+
+---
+
+## Prerequisites
+
+Before cloning and running the project, ensure you have the following installed:
+
+* **PHP:** Version 8.4 or higher
+* **Composer:** PHP dependency manager
+* **MySQL/PostgreSQL:** Supported database
+* **Git:** Version control
+
+
+### Laravel Requirements
+
+Ensure PHP extensions:
+`ext-curl, ext-json, ext-mbstring, ext-openssl, ext-pdo`, etc., are installed.
+
+---
+
+## Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/hardeex/event-schedule-api
+cd event-schedule-api
+```
+
+### Install PHP Dependencies
+
+```bash
+composer install
+```
+
+
+### Copy Environment File
+
+```bash
+cp .env.example .env
+```
+
+### Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## Configuration
+
+### Database Settings
+
+Update your `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=event_scheduler
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+### Mail Settings
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_mailtrap_username
+MAIL_PASSWORD=your_mailtrap_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="no-reply@eventscheduler.com"
+MAIL_FROM_NAME="Event Scheduler"
+```
+
+### JWT Setup
+
+```bash
+php artisan jwt:secret
+```
+
+### App URL
+
+```env
+APP_URL=http://localhost:8000
+```
+
+---
+
+## Database Setup
+
+### Create the Database
+
+```sql
+CREATE DATABASE event-schedule-api;
+```
+
+### Run Migrations
+
+```bash
+php artisan migrate
+```
+
+
+---
+
+## Running the Application
+
+### Start Server
+
+```bash
+php artisan serve
+```
+
+Access via: `http://localhost:8000`
+
+---
+
+## API Endpoints
+
+### Authentication Endpoints
+
+| Method | Endpoint                    | Description               |
+| ------ | --------------------------- | ------------------------- |
+| POST   | /api/register               | Register new user         |
+| POST   | /api/login                  | Login and receive JWT     |
+| GET    | /api/verify/email           | Verify email token        |
+| POST   | /api/email/resend           | Resend verification email |
+| POST   | /api/password/confirm       | Confirm password          |
+| POST   | /api/password/reset-request | Request password reset    |
+| POST   | /api/password/reset         | Reset password            |
+| POST   | /api/password/change        | Change password (auth)    |
+| POST   | /api/logout                 | Logout user               |
+| GET    | /api/me                     | Get user profile (auth)   |
+
+### Event Endpoints
+
+| Method | Endpoint                | Description            |
+| ------ | ----------------------- | ---------------------- |
+| GET    | /api/events             | List all events        |
+| GET    | /api/events/{id}        | View event details     |
+| POST   | /api/events/register    | Register user to event |
+| POST   | /api/events             | Create event (manager) |
+| DELETE | /api/events/delete/{id} | Cancel event (manager) |
+
+---
+
+## Example Requests
+
+### Register
+
+```bash
+curl -X POST http://localhost:8000/api/register \
+-H "Content-Type: application/json" \
+-d '{"name": "John Doe", "email": "john@example.com", "password": "Password123", "password_confirmation": "Password123", "role": "user"}'
+```
+
+### Login
+
+```bash
+curl -X POST http://localhost:8000/api/login \
+-H "Content-Type: application/json" \
+-d '{"email": "john@example.com", "password": "Password123"}'
+```
+
+### Create Event
+
+```bash
+curl -X POST http://localhost:8000/api/events \
+-H "Authorization: Bearer <JWT_TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{"name": "Tech Meetup", "start_datetime": "2025-09-01", "end_datetime": "2025-09-01", "max_participants": 50}'
+```
+
+---
+
+## Postman Collection
+
+Use the pre-configured collection to test endpoints easily:
+[Event Scheduler API Postman Collection](https://connectnest-hub.postman.co/workspace/connectNest-Hub-Workspace~5dfa6748-bfd1-4bdb-860c-685afa146d54/collection/37260121-02dbde0d-cb46-4f22-aca0-62ea98863ed2?action=share&creator=37260121)
+
+---
+
+
+## Troubleshooting
+
+### Database Errors
+
+* Ensure credentials in `.env` are correct
+* Confirm the database service is running
+
+
+### JWT Issues
+
+* Run `php artisan jwt:secret`
+* Check for expired/invalid tokens
+
+### Logs
+
+* Laravel logs can be found at `storage/logs/laravel.log`
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Fork the repo
+2. Create a branch `git checkout -b feature/your-feature`
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
